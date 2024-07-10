@@ -1,9 +1,9 @@
 import express from "express";
 import { jwtCheck, jwtParse } from "../middlewares/auth";
 import {
-    createCurrentUser,
-    getCurrentUser,
-    updateCurrentUser,
+  createCurrentUser,
+  getCurrentUser,
+  updateCurrentUser,
 } from "../controllers/myUserController";
 import { validateMyUserRequest } from "../middlewares/validation";
 

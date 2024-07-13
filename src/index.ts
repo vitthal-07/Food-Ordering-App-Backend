@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import myUserRoute from "./Routes/myUserRoute";
 import { v2 as cloudinary } from "cloudinary";
 import myRestaurantRouter from "./Routes/myRestaurantRoute";
+import restaurantRouter from "./Routes/restaurantRoute";
+
 mongoose
   .connect(process.env.DB_URL as string)
   .then(() => console.log("Connected to database"));
@@ -25,6 +27,7 @@ app.get("/health", async (req: Request, res: Response) => {
 
 app.use("/api/my/user", myUserRoute);
 app.use("/api/my/restaurant", myRestaurantRouter);
+app.use("/api/restaurant", restaurantRouter);
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");

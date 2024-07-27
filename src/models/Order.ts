@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema({
     cartItems: [
         {
             menuItemId: { type: String, required: true },
-            quantity: { type: String, required: true },
+            quantity: { type: Number, required: true },
             name: { type: String, required: true },
         },
     ],
@@ -21,7 +21,8 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ["placed", "paid", "inProgress", "outForDelivery", "delivered"],
     },
-    createdAt: { type: Number, default: Date.now },
+    createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("Order", orderSchema);
+const Order = mongoose.model("Order", orderSchema);
+export default Order;

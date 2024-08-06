@@ -7,6 +7,18 @@ const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
 const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
 
+export const getMyOrders = async (req: Request, res: Response) => {
+    try {
+        const orders = await Order.find({ user: req.userId })
+            .populate("restaurant")
+            .populate("user");
+        return res.send(orders);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+};
+
 type CheckoutSessionRequest = {
     cartItems: {
         menuItemId: string;
@@ -50,7 +62,7 @@ export const stripeWebhookHandler = async (req: Request, res: Response) => {
         await order.save();
     }
 
-    res.status(200).send();
+    return res.status(200).send();
 };
 
 export const createCheckoutSession = async (req: Request, res: Response) => {
@@ -115,7 +127,7 @@ const createLineItems = (
 
         const line_item: Stripe.Checkout.SessionCreateParams.LineItem = {
             price_data: {
-                currency: "gbp",
+                currency: "usd",
                 unit_amount: menuItem.price,
                 product_data: {
                     name: menuItem.name,
@@ -145,7 +157,7 @@ const createSession = async (
                     type: "fixed_amount",
                     fixed_amount: {
                         amount: deliveryPrice,
-                        currency: "gbp",
+                        currency: "usd",
                     },
                 },
             },
